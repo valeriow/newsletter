@@ -3,3 +3,4 @@ _site/
 .sass-cache/
 _data/audio.json
 *.mp3
+__pycache__/
