@@ -249,3 +249,9 @@ a:hover { text-decoration: underline; }
 .player--pendente { color: var(--text-3); font-size: 14px; background: var(--surface-2); border-style: dashed; }
 .episodio__versao { display: grid; gap: 6px; margin-top: 10px; }
 .episodio__versao audio { width: 100%; max-width: 560px; }
+
+.podcast__assinar { margin: 10px 0 0; font-size: 14px; color: var(--text-3); word-break: break-all; }
+.episodio__edicao { font-size: 14px; font-weight: 600; margin-top: 4px; }
+.episodio__rotulo { font-size: 13px; font-weight: 600; color: var(--text-2); }
+.episodio__baixar { font-size: 13px; }
+.episodio__pendente { font-size: 13px; color: var(--text-3); font-style: italic; }
