@@ -5,7 +5,7 @@ Uso: gerar_audio.py ROTEIRO.md SAIDA.mp3 [--capa CAPA.png]
 Lê as falas "**ANA:**" e "**LEO:**", sintetiza cada uma, concatena com pausas
 e grava um MP3 mono a 64 kbps com tags ID3. Imprime a duração em segundos.
 """
-import argparse, asyncio, json, os, re, subprocess, sys, tempfile
+import argparse, asyncio, hashlib, json, os, re, subprocess, sys, tempfile
 from pathlib import Path
 
 import edge_tts
@@ -106,7 +106,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("roteiro"); ap.add_argument("saida"); ap.add_argument("--capa")
     a = ap.parse_args()
-    meta, corpo = front_matter(Path(a.roteiro).read_text(encoding="utf-8"))
+    texto = Path(a.roteiro).read_text(encoding="utf-8")
+    meta, corpo = front_matter(texto)
+    sha = hashlib.sha256(texto.encode("utf-8")).hexdigest()
     itens = falas(corpo)
     n = sum(1 for q, _ in itens if q != "PAUSA")
     if n == 0:
@@ -118,7 +120,7 @@ def main():
         concatenar(itens, pasta, a.saida, meta, a.capa)
     d = duracao(a.saida)
     print(f"duração: {int(d//60)}m{int(d%60):02d}s, {os.path.getsize(a.saida)//1024} KB")
-    print(json.dumps({"duracao_seg": round(d), "bytes": os.path.getsize(a.saida)}))
+    print(json.dumps({"duracao_seg": round(d), "bytes": os.path.getsize(a.saida), "sha256": sha}))
 
 if __name__ == "__main__":
     main()

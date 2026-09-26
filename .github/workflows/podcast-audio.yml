@@ -39,8 +39,11 @@ jobs:
             ep=$(python3 -c "import yaml,re; t=open('$roteiro',encoding='utf-8').read(); m=re.match(r'---\n(.*?)\n---',t,re.S); f=yaml.safe_load(m.group(1)); print(f.get('episodio') or f\"{f['semana']}-{f['versao']}\")")
             tag="podcast-$ep"
             asset="$ep.mp3"
+            sha=$(sha256sum "$roteiro" | cut -d' ' -f1)
             if gh release view "$tag" --json assets -q '.assets[].name' 2>/dev/null | grep -qx "$asset"; then
-              echo "já existe: $asset"; continue
+              antigo=$(gh release download "$tag" --pattern "$ep.json" --output - 2>/dev/null | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha256',''))" 2>/dev/null || true)
+              if [ "$antigo" = "$sha" ]; then echo "já existe e o roteiro não mudou: $asset"; continue; fi
+              echo "roteiro mudou; regenerando $asset"
             fi
             echo "gerando $asset a partir de $roteiro"
             python3 scripts/gerar_audio.py "$roteiro" "$asset" --capa assets/img/avatar.png | tee "log-$ep.txt"
