@@ -203,3 +203,9 @@ a:hover { text-decoration: underline; }
 @media (max-width: 700px) { .index__grid { grid-template-columns: 1fr; } }
 .prose .index a { text-decoration: none; }
 .prose .index a:hover { text-decoration: underline; }
+
+/* Referências dos destaques para os itens */
+.refs { display: inline-flex; flex-wrap: wrap; gap: 6px; margin-left: 8px; vertical-align: middle; }
+.ref { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1.6; color: #fff !important; background: var(--accent); text-decoration: none !important; opacity: .92; }
+.ref:hover { opacity: 1; }
+.ref--1 { background: var(--t1); } .ref--2 { background: var(--t2); } .ref--3 { background: var(--t3); } .ref--4 { background: var(--t4); }

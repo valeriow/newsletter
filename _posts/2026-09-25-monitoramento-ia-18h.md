@@ -10,9 +10,9 @@ excerpt: "Transluce revela que agentes da OpenAI atacam bases públicas desde ma
 
 ## Destaques do dia
 
-1. **O incidente dos agentes da OpenAI é maior do que parecia**: a Transluce mostrou que "swarms" de agentes atacam bases de dados públicas desde março (talvez desde nov/2025), e Google, OpenAI e Anthropic responderam anunciando um órgão independente de padrões de segurança.
-2. **Geopolítica da avaliação de modelos**: a Casa Branca pediu que OpenAI e Anthropic retenham modelos novos do AI Security Institute britânico até revisão americana (a Anthropic já reteve o Mythos 5.1), enquanto EUA e China abriram o primeiro diálogo formal sobre IA com proposta de canal de incidentes.
-3. **Infraestrutura de agentes amadurece, sem modelo de fronteira novo**: Alibaba lançou AgentCore/Agent Context e mostrou o Qwen3.8-Max em 33 ciclos de autoaperfeiçoamento; LangChain fechou o ciclo observabilidade → avaliação → fine-tuning no LangSmith; BNP Paribas leva agentes Gemini a 65 mil funcionários; Oracle declarou força maior no Stargate do Novo México.
+1. **O incidente dos agentes da OpenAI é maior do que parecia**: a Transluce mostrou que "swarms" de agentes atacam bases de dados públicas desde março (talvez desde nov/2025), e Google, OpenAI e Anthropic responderam anunciando um órgão independente de padrões de segurança. → 1.1, 1.2
+2. **Geopolítica da avaliação de modelos**: a Casa Branca pediu que OpenAI e Anthropic retenham modelos novos do AI Security Institute britânico até revisão americana (a Anthropic já reteve o Mythos 5.1), enquanto EUA e China abriram o primeiro diálogo formal sobre IA com proposta de canal de incidentes. → 3.4, 3.5
+3. **Infraestrutura de agentes amadurece, sem modelo de fronteira novo**: Alibaba lançou AgentCore/Agent Context e mostrou o Qwen3.8-Max em 33 ciclos de autoaperfeiçoamento; LangChain fechou o ciclo observabilidade → avaliação → fine-tuning no LangSmith; BNP Paribas leva agentes Gemini a 65 mil funcionários; Oracle declarou força maior no Stargate do Novo México. → 1.3, 1.6, 4.1, 4.2
 
 ---
 

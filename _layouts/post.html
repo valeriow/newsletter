@@ -98,7 +98,8 @@ layout: default
         ol.className = 'index__items';
         items.forEach(function (it, i) {
           var target = it.tagName === 'H3' ? it : it.parentNode;
-          if (!target.id) target.id = h.id + '-item-' + (i + 1);
+          var num = it.textContent.trim().match(/^(\d)\.(\d+)/);
+          target.id = num ? 'item-' + num[1] + '-' + num[2] : h.id + '-item-' + (i + 1);
           target.classList.add('item-anchor');
           var li = document.createElement('li');
           var la = document.createElement('a');
@@ -117,6 +118,32 @@ layout: default
     });
     idx.appendChild(grid);
     firstTheme.parentNode.insertBefore(idx, firstTheme);
+  }
+  // Destaques: transforma "→ 1.1, 3.4" em links para os itens
+  var hl = prose.querySelector('h2.theme--0');
+  var hlList = hl && hl.nextElementSibling && hl.nextElementSibling.tagName === 'OL' ? hl.nextElementSibling : null;
+  if (hlList) {
+    hlList.querySelectorAll('li').forEach(function (li) {
+      var last = li.lastChild;
+      while (last && last.nodeType === 3 && !last.textContent.trim()) last = last.previousSibling;
+      if (!last || last.nodeType !== 3) return;
+      var m = last.textContent.match(/^(.*?)\s*(?:\(|\[)?\s*(?:→|->|ver)\s*((?:\d\.\d+)(?:\s*(?:,|e|;)\s*\d\.\d+)*)\s*(?:\)|\])?\.?\s*$/);
+      if (!m) return;
+      last.textContent = m[1];
+      var refs = document.createElement('span');
+      refs.className = 'refs';
+      m[2].match(/\d\.\d+/g).forEach(function (r) {
+        var id = 'item-' + r.replace('.', '-');
+        var t = document.getElementById(id);
+        var a = document.createElement('a');
+        a.href = '#' + id;
+        a.className = 'ref ref--' + r.charAt(0);
+        a.textContent = r;
+        if (t) a.title = t.textContent.trim().replace(/^\d\.\d+\s*/, '');
+        refs.appendChild(a);
+      });
+      li.appendChild(refs);
+    });
   }
   // Marca a seção visível
   var links = toc.querySelectorAll('a');
