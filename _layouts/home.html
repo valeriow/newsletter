@@ -1,0 +1,60 @@
+---
+layout: default
+---
+<section class="hero">
+  <p class="hero__kicker">Resumo diário</p>
+  <h1 class="hero__title">{{ site.title }}</h1>
+  <p class="hero__lead">{{ content | strip_html | strip_newlines }}</p>
+  <ul class="themes" aria-label="Temas cobertos">
+    <li><span class="dot dot--1"></span>IA agêntica</li>
+    <li><span class="dot dot--2"></span>Open source</li>
+    <li><span class="dot dot--3"></span>Setor público</li>
+    <li><span class="dot dot--4"></span>IA aplicada</li>
+  </ul>
+</section>
+
+{% assign posts = site.posts | sort: "date" | reverse %}
+{% if posts.size == 0 %}
+<p class="empty">Nenhuma edição publicada ainda.</p>
+{% else %}
+{% assign latest = posts.first %}
+<section class="latest" aria-labelledby="ultima">
+  <h2 id="ultima" class="section-title">Última edição</h2>
+  <article class="card card--featured">
+    <a class="card__link" href="{{ latest.url | relative_url }}">
+      <div class="card__date">
+        <span class="card__day">{{ latest.date | date: "%d" }}</span>
+        <span class="card__month">{{ latest.date | date: "%b" | replace: "Jan","jan" | replace: "Feb","fev" | replace: "Mar","mar" | replace: "Apr","abr" | replace: "May","mai" | replace: "Jun","jun" | replace: "Jul","jul" | replace: "Aug","ago" | replace: "Sep","set" | replace: "Oct","out" | replace: "Nov","nov" | replace: "Dec","dez" }} {{ latest.date | date: "%Y" }}</span>
+        <span class="card__time">{{ latest.date | date: "%Hh" }}</span>
+      </div>
+      <div class="card__body">
+        <h3 class="card__title">{{ latest.title }}</h3>
+        {% if latest.excerpt %}
+        {% assign parts = latest.excerpt | strip_html | strip_newlines | split: ";" %}
+        <ul class="card__highlights">
+          {% for p in parts limit: 6 %}<li>{{ p | strip }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+        <span class="card__cta">Ler a edição completa →</span>
+      </div>
+    </a>
+  </article>
+</section>
+
+{% if posts.size > 1 %}
+<section class="archive" aria-labelledby="anteriores">
+  <h2 id="anteriores" class="section-title">Edições anteriores</h2>
+  <ul class="list">
+    {% for post in posts offset: 1 %}
+    <li class="list__item">
+      <a class="list__link" href="{{ post.url | relative_url }}">
+        <span class="list__date">{{ post.date | date: "%d/%m/%Y" }} · {{ post.date | date: "%Hh" }}</span>
+        <span class="list__title">{{ post.title }}</span>
+        {% if post.excerpt %}<span class="list__excerpt">{{ post.excerpt | strip_html | strip_newlines | truncate: 180 }}</span>{% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endif %}

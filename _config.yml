@@ -2,12 +2,20 @@ title: Monitoramento IA
 description: Resumos de novidades em IA agêntica, open source, setor público e IA aplicada — gerados automaticamente, uma ou mais edições por dia.
 lang: pt-BR
 timezone: America/Sao_Paulo
-theme: minima
+url: "https://valeriow.github.io"
+baseurl: "/newsletter"
 permalink: /:year/:month/:day/:title/
-paginate: 10
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
 plugins:
   - jekyll-feed
-  - jekyll-paginate
-minima:
-  date_format: "%d/%m/%Y"
-show_excerpts: true
+defaults:
+  - scope: { path: "", type: "posts" }
+    values: { layout: post }
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

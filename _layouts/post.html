@@ -1,0 +1,134 @@
+---
+layout: default
+---
+<article class="post">
+  <header class="post__header">
+    <a class="crumb" href="{{ '/' | relative_url }}">← Todas as edições</a>
+    <p class="post__meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d/%m/%Y" }}</time>
+      <span class="post__sep">·</span>
+      <span>Edição das {{ page.date | date: "%Hh" }}</span>
+    </p>
+    <h1 class="post__title">{{ page.title }}</h1>
+  </header>
+
+  <div class="post__layout">
+    <aside class="toc" aria-label="Seções desta edição">
+      <p class="toc__label">Nesta edição</p>
+      <ol class="toc__list" id="toc"></ol>
+    </aside>
+    <div class="prose" id="prose">
+      {{ content }}
+    </div>
+  </div>
+
+  <nav class="pager" aria-label="Outras edições">
+    {% if page.previous %}
+    <a class="pager__link pager__link--prev" href="{{ page.previous.url | relative_url }}">
+      <span class="pager__label">← Anterior</span>
+      <span class="pager__title">{{ page.previous.title }}</span>
+    </a>
+    {% else %}<span></span>{% endif %}
+    {% if page.next %}
+    <a class="pager__link pager__link--next" href="{{ page.next.url | relative_url }}">
+      <span class="pager__label">Próxima →</span>
+      <span class="pager__title">{{ page.next.title }}</span>
+    </a>
+    {% endif %}
+  </nav>
+</article>
+
+<script>
+(function () {
+  var prose = document.getElementById('prose');
+  var toc = document.getElementById('toc');
+  if (!prose || !toc) return;
+  var heads = prose.querySelectorAll('h2');
+  if (!heads.length) { toc.parentNode.hidden = true; return; }
+  var n = 0;
+  heads.forEach(function (h) {
+    if (!h.id) { h.id = 'secao-' + (++n); }
+    var text = h.textContent.trim();
+    var theme = text.match(/^(\d)\./);
+    if (theme) { h.classList.add('theme', 'theme--' + theme[1]); }
+    else if (/destaques/i.test(text)) { h.classList.add('theme', 'theme--0'); }
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = text.replace(/^\d\.\s*/, '');
+    if (theme) { a.classList.add('toc__theme-' + theme[1]); }
+    li.appendChild(a);
+    toc.appendChild(li);
+  });
+  // Marca as linhas de fonte
+  prose.querySelectorAll('p').forEach(function (p) {
+    var f = p.firstElementChild;
+    if (f && f.tagName === 'STRONG' && f === p.firstChild && /^Fontes?:/.test(f.textContent)) p.classList.add('source');
+  });
+  // Índice completo (temas e itens) logo após os destaques do dia
+  var sections = Array.prototype.slice.call(heads);
+  var firstTheme = sections.filter(function (h) { return /^\d\./.test(h.textContent.trim()); })[0];
+  if (firstTheme) {
+    var idx = document.createElement('nav');
+    idx.className = 'index';
+    idx.setAttribute('aria-label', 'Índice da edição');
+    var title = document.createElement('p');
+    title.className = 'index__title';
+    title.textContent = 'Nesta edição';
+    idx.appendChild(title);
+    var grid = document.createElement('div');
+    grid.className = 'index__grid';
+    sections.forEach(function (h) {
+      var m = h.textContent.trim().match(/^(\d)\.\s*(.*)$/);
+      if (!m) return;
+      var box = document.createElement('div');
+      box.className = 'index__theme index__theme--' + m[1];
+      var a = document.createElement('a');
+      a.href = '#' + h.id; a.className = 'index__heading'; a.textContent = m[2];
+      box.appendChild(a);
+      var items = [];
+      var el = h.nextElementSibling;
+      while (el && el.tagName !== 'H2') {
+        if (el.tagName === 'H3' && /^\d\.\d+/.test(el.textContent.trim())) items.push(el);
+        else if (el.tagName === 'P' && el.firstElementChild && el.firstElementChild.tagName === 'STRONG' && el.firstElementChild === el.firstChild && /^\d\.\d+/.test(el.firstElementChild.textContent)) items.push(el.firstElementChild);
+        el = el.nextElementSibling;
+      }
+      if (items.length) {
+        var ol = document.createElement('ol');
+        ol.className = 'index__items';
+        items.forEach(function (it, i) {
+          var target = it.tagName === 'H3' ? it : it.parentNode;
+          if (!target.id) target.id = h.id + '-item-' + (i + 1);
+          target.classList.add('item-anchor');
+          var li = document.createElement('li');
+          var la = document.createElement('a');
+          la.href = '#' + target.id;
+          la.textContent = it.textContent.trim().replace(/^\d\.\d+\s*/, '');
+          li.appendChild(la); ol.appendChild(li);
+        });
+        box.appendChild(ol);
+      } else {
+        var none = document.createElement('p');
+        none.className = 'index__none';
+        none.textContent = 'Sem novidades relevantes nesta edição.';
+        box.appendChild(none);
+      }
+      grid.appendChild(box);
+    });
+    idx.appendChild(grid);
+    firstTheme.parentNode.insertBefore(idx, firstTheme);
+  }
+  // Marca a seção visível
+  var links = toc.querySelectorAll('a');
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('href') === '#' + e.target.id); });
+        }
+      });
+    }, { rootMargin: '-10% 0px -80% 0px' });
+    heads.forEach(function (h) { obs.observe(h); });
+  }
+})();
+</script>
