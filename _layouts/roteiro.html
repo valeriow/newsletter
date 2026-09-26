@@ -15,6 +15,7 @@ layout: default
     {% assign par = site.podcast | where: "semana", page.semana | where_exp: "p", "p.url != page.url" | first %}
     {% if par %}<p class="roteiro__alt">Outra versão desta semana: <a href="{{ par.url | relative_url }}">{{ par.title }}</a> ({{ par.duracao }})</p>{% endif %}
   </header>
+  {% include player.html ep=page %}
   <div class="prose prose--narrow roteiro">
     {{ content }}
   </div>

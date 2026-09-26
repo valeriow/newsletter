@@ -241,3 +241,11 @@ a:hover { text-decoration: underline; }
 .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-family: var(--sans); font-size: 12px; font-weight: 700; vertical-align: middle; }
 .badge--semanal { background: var(--t4); color: #fff; }
 .post__kind { margin: 12px 0 0; }
+
+/* Player de podcast */
+.player { margin: 22px 0 8px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.player audio { width: 100%; display: block; }
+.player__meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 8px; font-size: 13px; color: var(--text-3); }
+.player--pendente { color: var(--text-3); font-size: 14px; background: var(--surface-2); border-style: dashed; }
+.episodio__versao { display: grid; gap: 6px; margin-top: 10px; }
+.episodio__versao audio { width: 100%; max-width: 560px; }

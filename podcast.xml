@@ -1,0 +1,36 @@
+---
+layout: none
+permalink: /podcast.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Radar IA — podcast semanal</title>
+    <link>{{ '/podcast/' | absolute_url }}</link>
+    <atom:link href="{{ '/podcast.xml' | absolute_url }}" rel="self" type="application/rss+xml"/>
+    <language>pt-br</language>
+    <description>As principais notícias da semana em inteligência artificial — IA agêntica, open source, setor público e IA aplicada — em uma conversa entre dois apresentadores. Versão curta (~20 min) e completa (~60 min), todo domingo.</description>
+    <itunes:author>Radar IA</itunes:author>
+    <itunes:owner><itunes:name>Valério Wittler</itunes:name><itunes:email>valeriow@gmail.com</itunes:email></itunes:owner>
+    <itunes:image href="{{ '/assets/img/capa-podcast.png' | absolute_url }}"/>
+    <image><url>{{ '/assets/img/capa-podcast.png' | absolute_url }}</url><title>Radar IA — podcast semanal</title><link>{{ '/podcast/' | absolute_url }}</link></image>
+    <itunes:category text="Technology"/>
+    <itunes:category text="News"><itunes:category text="Tech News"/></itunes:category>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:type>episodic</itunes:type>
+    {% assign eps = site.podcast | sort: "date" | reverse %}
+    {% for e in eps %}{% assign a = site.data.audio[e.semana][e.versao] %}{% if a %}
+    <item>
+      <title>{{ e.titulo_semana | default: e.title | xml_escape }} — {{ e.versao | capitalize }}</title>
+      <link>{{ e.url | absolute_url }}</link>
+      <guid isPermaLink="false">radar-ia-{{ e.semana }}-{{ e.versao }}</guid>
+      <pubDate>{{ a.publicado | default: e.date | date_to_rfc822 }}</pubDate>
+      <description>{{ e.resumo | default: e.title | xml_escape }} Roteiro completo e links: {{ e.url | absolute_url }}</description>
+      <enclosure url="{{ a.url }}" length="{{ a.bytes }}" type="audio/mpeg"/>
+      <itunes:duration>{{ a.duracao_seg }}</itunes:duration>
+      <itunes:episodeType>{% if e.versao == "curto" %}trailer{% else %}full{% endif %}</itunes:episodeType>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    {% endif %}{% endfor %}
+  </channel>
+</rss>

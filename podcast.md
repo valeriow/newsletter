@@ -5,7 +5,7 @@ permalink: /podcast/
 ---
 <section class="hero hero--compact">
   <h1 class="page__title">Podcast Radar IA</h1>
-  <p class="hero__lead">Roteiros semanais com as principais notícias da semana, em formato de conversa entre dois apresentadores: uma versão curta (~20 min) e uma completa (~60 min). Gerados aos domingos a partir da edição semanal.</p>
+  <p class="hero__lead">Roteiros semanais com as principais notícias da semana, em formato de conversa entre dois apresentadores: uma versão curta (~20 min) e uma completa (~60 min). Gerados aos domingos a partir da edição semanal; o áudio é produzido automaticamente com vozes sintéticas. Assine no seu app de podcast: <a href="{{ '/podcast.xml' | relative_url }}">feed do podcast</a>.</p>
 </section>
 {% assign eps = site.podcast | sort: "date" | reverse | group_by: "semana" %}
 {% if eps.size == 0 %}
@@ -19,10 +19,13 @@ permalink: /podcast/
       <span class="list__date">Semana {{ g.name }} · {{ first.periodo }}</span>
       <span class="list__title">{{ first.titulo_semana | default: first.title }}</span>
       {% if first.resumo %}<span class="list__excerpt">{{ first.resumo }}</span>{% endif %}
-      <span class="episodio__versoes">
       {% assign ordenados = g.items | sort: "ordem" %}
-      {% for e in ordenados %}<a class="episodio__link" href="{{ e.url | relative_url }}">{{ e.versao | capitalize }} · {{ e.duracao }}</a>{% endfor %}
-      </span>
+      {% for e in ordenados %}
+      <div class="episodio__versao">
+        <a class="episodio__link" href="{{ e.url | relative_url }}">{{ e.versao | capitalize }} · {{ e.duracao }} · roteiro</a>
+        {% assign a = site.data.audio[e.semana][e.versao] %}{% if a %}<audio controls preload="none" src="{{ a.url }}"></audio>{% endif %}
+      </div>
+      {% endfor %}
     </div>
   </li>
 {% endfor %}

@@ -1,0 +1,54 @@
+name: Podcast — gerar áudio dos roteiros
+
+on:
+  push:
+    branches: [main]
+    paths: ["_podcast/**", "scripts/gerar_audio.py", ".github/workflows/podcast-audio.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: podcast-audio
+  cancel-in-progress: false
+
+jobs:
+  audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+          pip install -q edge-tts pyyaml
+
+      - name: Gerar áudios que ainda não existem
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for roteiro in _podcast/*.md; do
+            semana=$(python3 -c "import yaml,sys,re; t=open('$roteiro',encoding='utf-8').read(); m=re.match(r'---\n(.*?)\n---',t,re.S); print(yaml.safe_load(m.group(1))['semana'])")
+            versao=$(python3 -c "import yaml,sys,re; t=open('$roteiro',encoding='utf-8').read(); m=re.match(r'---\n(.*?)\n---',t,re.S); print(yaml.safe_load(m.group(1))['versao'])")
+            tag="podcast-$semana"
+            asset="semana-$semana-$versao.mp3"
+            if gh release view "$tag" --json assets -q '.assets[].name' 2>/dev/null | grep -qx "$asset"; then
+              echo "já existe: $asset"; continue
+            fi
+            echo "gerando $asset a partir de $roteiro"
+            python3 scripts/gerar_audio.py "$roteiro" "$asset" --capa assets/img/avatar.png | tee "log-$versao.txt"
+            meta=$(tail -n 1 "log-$versao.txt")
+            echo "$meta" > "semana-$semana-$versao.json"
+            if ! gh release view "$tag" >/dev/null 2>&1; then
+              gh release create "$tag" --title "Podcast Radar IA — semana $semana" --notes "Áudios gerados automaticamente a partir dos roteiros da semana $semana." --latest=false
+            fi
+            gh release upload "$tag" "$asset" "semana-$semana-$versao.json" --clobber
+          done

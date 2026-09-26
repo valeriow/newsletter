@@ -1,0 +1,14 @@
+{% comment %} Uso: {% include player.html ep=<documento da coleção podcast> %} {% endcomment %}
+{% assign a = site.data.audio[include.ep.semana][include.ep.versao] %}
+{% if a %}
+{% assign min = a.duracao_seg | divided_by: 60 %}{% assign seg = a.duracao_seg | modulo: 60 %}
+<div class="player">
+  <audio controls preload="none" src="{{ a.url }}"></audio>
+  <div class="player__meta">
+    <span>{{ include.ep.versao | capitalize }} · {{ min }} min{% if seg > 0 %} {{ seg }} s{% endif %}</span>
+    <a href="{{ a.url }}" download>Baixar MP3 ({{ a.bytes | divided_by: 1048576.0 | round: 1 }} MB)</a>
+  </div>
+</div>
+{% else %}
+<p class="player player--pendente">Áudio em preparação — costuma ficar pronto até uma hora depois da publicação do roteiro.</p>
+{% endif %}

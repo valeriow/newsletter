@@ -1,0 +1,80 @@
+name: Site — build e deploy (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ["Podcast — gerar áudio dos roteiros"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Coletar metadados dos áudios publicados em Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p _data
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/releases" > releases.json
+          python3 - <<'EOF'
+          import json, re, urllib.request, os
+          rels = json.load(open("releases.json"))
+          if isinstance(rels, dict): rels = [rels]
+          audio = {}
+          for r in rels:
+              tag = r.get("tag_name", "")
+              if not tag.startswith("podcast-"): continue
+              semana = tag[len("podcast-"):]
+              assets = {a["name"]: a for a in r.get("assets", [])}
+              for nome, a in assets.items():
+                  m = re.match(rf"semana-{re.escape(semana)}-(\w+)\.mp3$", nome)
+                  if not m: continue
+                  versao = m.group(1)
+                  meta = {}
+                  j = assets.get(f"semana-{semana}-{versao}.json")
+                  if j:
+                      try:
+                          meta = json.load(urllib.request.urlopen(j["browser_download_url"]))
+                      except Exception as e:
+                          print("meta indisponível:", nome, e)
+                  audio.setdefault(semana, {})[versao] = {
+                      "url": a["browser_download_url"],
+                      "bytes": a.get("size", meta.get("bytes", 0)),
+                      "duracao_seg": meta.get("duracao_seg", 0),
+                      "publicado": r.get("published_at", ""),
+                  }
+          json.dump(audio, open("_data/audio.json", "w"), ensure_ascii=False, indent=1)
+          print(json.dumps(audio, indent=1, ensure_ascii=False))
+          EOF
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
