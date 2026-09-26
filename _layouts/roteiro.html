@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<article class="post">
+  <header class="post__header">
+    <a class="crumb" href="{{ '/podcast/' | relative_url }}">← Podcast</a>
+    <p class="post__meta">
+      <span>Semana {{ page.semana }}</span>
+      <span class="post__sep">·</span>
+      <span>{{ page.periodo }}</span>
+      <span class="post__sep">·</span>
+      <span>{{ page.duracao }}</span>
+    </p>
+    <h1 class="post__title">{{ page.title }}</h1>
+    {% assign par = site.podcast | where: "semana", page.semana | where_exp: "p", "p.url != page.url" | first %}
+    {% if par %}<p class="roteiro__alt">Outra versão desta semana: <a href="{{ par.url | relative_url }}">{{ par.title }}</a> ({{ par.duracao }})</p>{% endif %}
+  </header>
+  <div class="prose prose--narrow roteiro">
+    {{ content }}
+  </div>
+</article>

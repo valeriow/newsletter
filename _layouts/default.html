@@ -31,6 +31,7 @@
       </a>
       <nav class="topnav" aria-label="Principal">
         <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Edições</a>
+        <a href="{{ '/podcast/' | relative_url }}"{% if page.url contains '/podcast/' %} aria-current="page"{% endif %}>Podcast</a>
         <a href="{{ '/sobre/' | relative_url }}"{% if page.url == '/sobre/' %} aria-current="page"{% endif %}>Sobre</a>
         <a href="{{ '/feed.xml' | relative_url }}" title="Feed RSS/Atom">Feed</a>
       </nav>

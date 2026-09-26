@@ -13,9 +13,15 @@ kramdown:
   auto_ids: true
 plugins:
   - jekyll-feed
+collections:
+  podcast:
+    output: true
+    permalink: /podcast/:name/
 defaults:
   - scope: { path: "", type: "posts" }
     values: { layout: post }
+  - scope: { path: "", type: "podcast" }
+    values: { layout: roteiro }
 exclude:
   - README.md
   - Gemfile

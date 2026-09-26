@@ -226,3 +226,14 @@ a:hover { text-decoration: underline; }
 .prose > p > em:only-child { display: block; }
 .prose h2 + p > em:only-child, .prose .item + p > em:only-child { margin-top: 6px; }
 @media (max-width: 700px) { .item { padding: 16px 16px 14px; } }
+
+/* Podcast / roteiros */
+.hero--compact { padding: 40px 0 8px; }
+.page__title { margin: 0 0 10px; font-size: clamp(28px, 4.5vw, 38px); letter-spacing: -.02em; }
+.episodio__versoes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.episodio__link { display: inline-block; padding: 5px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 600; }
+.episodio__link:hover { background: var(--accent); color: #fff; text-decoration: none; }
+.roteiro__alt { margin: 12px 0 0; font-size: 14px; color: var(--text-3); }
+.roteiro p { margin-bottom: 14px; }
+.roteiro p > strong:first-child { font-family: var(--sans); color: var(--accent); }
+.roteiro h2 { font-size: 20px; }
