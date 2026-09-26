@@ -7,8 +7,9 @@ layout: default
     <p class="post__meta">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d/%m/%Y" }}</time>
       <span class="post__sep">·</span>
-      <span>Edição das {{ page.date | date: "%Hh" }}</span>
+      <span>{% if page.tipo == "semanal" %}{{ page.periodo }}{% else %}Edição das {{ page.date | date: "%Hh" }}{% endif %}</span>
     </p>
+    {% if page.tipo == "semanal" %}<p class="post__kind"><span class="badge badge--semanal">Edição semanal</span></p>{% endif %}
     <h1 class="post__title">{{ page.title }}</h1>
   </header>
 

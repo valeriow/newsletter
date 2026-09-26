@@ -5,7 +5,7 @@ permalink: /podcast/
 ---
 <section class="hero hero--compact">
   <h1 class="page__title">Podcast Radar IA</h1>
-  <p class="hero__lead">Roteiros semanais com as principais notícias da semana, em formato de conversa entre dois apresentadores: uma versão curta (~20 min) e uma completa (~60 min). Gerados aos domingos a partir das edições diárias.</p>
+  <p class="hero__lead">Roteiros semanais com as principais notícias da semana, em formato de conversa entre dois apresentadores: uma versão curta (~20 min) e uma completa (~60 min). Gerados aos domingos a partir da edição semanal.</p>
 </section>
 {% assign eps = site.podcast | sort: "date" | reverse | group_by: "semana" %}
 {% if eps.size == 0 %}

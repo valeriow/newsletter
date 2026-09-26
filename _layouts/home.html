@@ -30,7 +30,7 @@ layout: default
         <span class="card__time">{{ latest.date | date: "%Hh" }}</span>
       </div>
       <div class="card__body">
-        <h3 class="card__title">{{ latest.title }}</h3>
+        <h3 class="card__title">{% if latest.tipo == "semanal" %}<span class="badge badge--semanal">Semanal</span> {% endif %}{{ latest.title }}</h3>
         {% if latest.excerpt %}
         {% assign parts = latest.excerpt | strip_html | strip_newlines | split: ";" %}
         <ul class="card__highlights">
@@ -51,7 +51,7 @@ layout: default
     <li class="list__item">
       <a class="list__link" href="{{ post.url | relative_url }}">
         <span class="list__date">{{ post.date | date: "%d/%m/%Y" }} · {{ post.date | date: "%Hh" }}</span>
-        <span class="list__title">{{ post.title }}</span>
+        <span class="list__title">{% if post.tipo == "semanal" %}<span class="badge badge--semanal">Semanal</span> {% endif %}{{ post.title }}</span>
         {% if post.excerpt %}<span class="list__excerpt">{{ post.excerpt | strip_html | strip_newlines | truncate: 180 }}</span>{% endif %}
       </a>
     </li>
