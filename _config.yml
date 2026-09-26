@@ -4,6 +4,8 @@ lang: pt-BR
 timezone: America/Sao_Paulo
 url: "https://valeriow.github.io"
 baseurl: "/newsletter"
+# Google Analytics 4 — ID de medição (G-XXXXXXXXXX). Vazio desativa.
+google_analytics: ""
 permalink: /:year/:month/:day/:title/
 markdown: kramdown
 kramdown:

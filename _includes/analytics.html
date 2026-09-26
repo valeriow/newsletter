@@ -1,0 +1,47 @@
+{% if site.google_analytics and jekyll.environment == "production" %}
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ site.google_analytics }}', { anonymize_ip: true });
+
+  // Eventos de uso: cliques nos destaques, no índice, nas fontes e em links externos
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a');
+    if (!a) return;
+    var edicao = document.querySelector('.post__title');
+    var base = { edicao: edicao ? edicao.textContent.trim() : document.title };
+    if (a.classList.contains('ref')) {
+      gtag('event', 'clique_destaque', Object.assign(base, { item: a.textContent.trim() }));
+    } else if (a.closest('.index')) {
+      gtag('event', 'clique_indice', Object.assign(base, { item: a.textContent.trim().slice(0, 100) }));
+    } else if (a.closest('.toc')) {
+      gtag('event', 'clique_secao', Object.assign(base, { secao: a.textContent.trim() }));
+    } else if (a.closest('p.source')) {
+      gtag('event', 'clique_fonte', Object.assign(base, { fonte: a.hostname, url: a.href }));
+    } else if (a.hostname && a.hostname !== location.hostname) {
+      gtag('event', 'clique_externo', Object.assign(base, { url: a.href }));
+    } else if (a.closest('.card') || a.closest('.list')) {
+      gtag('event', 'abrir_edicao', { edicao: a.querySelector('.card__title, .list__title') ? a.querySelector('.card__title, .list__title').textContent.trim() : a.href });
+    }
+  });
+
+  // Profundidade de leitura por edição (25/50/75/100%)
+  (function () {
+    var prose = document.getElementById('prose');
+    if (!prose) return;
+    var marks = [25, 50, 75, 100], sent = {};
+    function check() {
+      var rect = prose.getBoundingClientRect();
+      var lido = Math.min(100, Math.round(((window.innerHeight - rect.top) / rect.height) * 100));
+      marks.forEach(function (m) {
+        if (lido >= m && !sent[m]) { sent[m] = true; gtag('event', 'leitura', { edicao: document.querySelector('.post__title').textContent.trim(), percentual: m }); }
+      });
+    }
+    window.addEventListener('scroll', check, { passive: true });
+    check();
+  })();
+</script>
+{% endif %}
