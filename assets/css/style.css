@@ -255,3 +255,6 @@ a:hover { text-decoration: underline; }
 .episodio__rotulo { font-size: 13px; font-weight: 600; color: var(--text-2); }
 .episodio__baixar { font-size: 13px; }
 .episodio__pendente { font-size: 13px; color: var(--text-3); font-style: italic; }
+
+.badge--diario { background: var(--t1); color: #fff; }
+.episodio__links { font-size: 13px; color: var(--text-3); }

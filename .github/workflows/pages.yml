@@ -37,20 +37,18 @@ jobs:
           for r in rels:
               tag = r.get("tag_name", "")
               if not tag.startswith("podcast-"): continue
-              semana = tag[len("podcast-"):]
+              ep = tag[len("podcast-"):]
               assets = {a["name"]: a for a in r.get("assets", [])}
-              for nome, a in assets.items():
-                  m = re.match(rf"semana-{re.escape(semana)}-(\w+)\.mp3$", nome)
-                  if not m: continue
-                  versao = m.group(1)
+              a = assets.get(f"{ep}.mp3")
+              if a:
                   meta = {}
-                  j = assets.get(f"semana-{semana}-{versao}.json")
+                  j = assets.get(f"{ep}.json")
                   if j:
                       try:
                           meta = json.load(urllib.request.urlopen(j["browser_download_url"]))
                       except Exception as e:
-                          print("meta indisponível:", nome, e)
-                  audio.setdefault(semana, {})[versao] = {
+                          print("meta indisponível:", ep, e)
+                  audio[ep] = {
                       "url": a["browser_download_url"],
                       "bytes": a.get("size", meta.get("bytes", 0)),
                       "duracao_seg": meta.get("duracao_seg", 0),

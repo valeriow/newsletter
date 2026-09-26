@@ -92,8 +92,8 @@ def concatenar(itens, pasta, saida, meta, capa):
     else:
         cmd += ["-map", "0:a"]
     cmd += ["-ac", "1", "-ar", "24000", "-c:a", "libmp3lame", "-b:a", "64k",
-            "-metadata", f"title={meta.get('titulo_semana', 'Radar IA')} — {meta.get('title', '')}",
-            "-metadata", "artist=Radar IA", "-metadata", "album=Radar IA — podcast semanal",
+            "-metadata", f"title={meta.get('title', 'Radar IA')}",
+            "-metadata", "artist=Radar IA", "-metadata", "album=Radar IA — podcast",
             "-metadata", f"date={meta.get('date', '')[:4]}", "-id3v2_version", "3", saida]
     subprocess.run(cmd, check=True)
 
