@@ -1,0 +1,13 @@
+title: Monitoramento IA
+description: Resumo diário de novidades em IA agêntica, open source, setor público e IA aplicada — gerado automaticamente.
+lang: pt-BR
+timezone: America/Sao_Paulo
+theme: minima
+permalink: /:year/:month/:day/:title/
+paginate: 10
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+minima:
+  date_format: "%d/%m/%Y"
+show_excerpts: true
