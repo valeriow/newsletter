@@ -61,7 +61,8 @@ a:hover { text-decoration: underline; }
 .topbar__inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); font-weight: 600; }
 .brand:hover { text-decoration: none; }
-.brand__mark { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+.brand__icon { width: 30px; height: 30px; display: block; }
+.brand__accent { color: var(--accent); }
 .topnav { display: flex; gap: 4px; }
 .topnav a { color: var(--text-2); padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; }
 .topnav a:hover { background: var(--surface-2); text-decoration: none; color: var(--text); }
@@ -70,7 +71,8 @@ a:hover { text-decoration: underline; }
 /* Página inicial */
 .hero { padding: 56px 0 28px; }
 .hero__kicker { margin: 0 0 6px; color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
-.hero__title { margin: 0; font-size: clamp(30px, 5vw, 44px); line-height: 1.1; letter-spacing: -.02em; }
+.hero__title { margin: 0; line-height: 0; }
+.hero__logo { width: min(520px, 100%); height: auto; display: block; margin-left: -10px; }
 .hero__lead { margin: 14px 0 0; max-width: 62ch; color: var(--text-2); font-size: 17px; }
 .themes { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .themes li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 13px; font-weight: 500; color: var(--text-2); }

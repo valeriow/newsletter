@@ -2,8 +2,10 @@
 layout: default
 ---
 <section class="hero">
-  <p class="hero__kicker">Resumo diário</p>
-  <h1 class="hero__title">{{ site.title }}</h1>
+  <h1 class="hero__title"><picture>
+    <source srcset="{{ '/assets/img/logo-dark.svg' | relative_url }}" media="(prefers-color-scheme: dark)">
+    <img class="hero__logo" src="{{ '/assets/img/logo-light.svg' | relative_url }}" alt="Radar IA" width="520" height="120">
+  </picture></h1>
   <p class="hero__lead">{{ content | strip_html | strip_newlines }}</p>
   <ul class="themes" aria-label="Temas cobertos">
     <li><span class="dot dot--1"></span>IA agêntica</li>

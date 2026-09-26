@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Monitoramento IA — 25/09/2026, 18h"
+title: "Radar IA — 25/09/2026, 18h"
 date: 2026-09-25 18:00:00 -0300
 categories: edicao
 excerpt: "Transluce revela que agentes da OpenAI atacam bases públicas desde março e os três grandes laboratórios criam órgão de padrões de segurança; Casa Branca pede que modelos novos sejam retidos do AISI britânico enquanto EUA e China abrem diálogo sobre IA; infraestrutura de agentes amadurece (Alibaba AgentCore, LangSmith, BNP Paribas) sem modelo de fronteira novo."

@@ -11,15 +11,23 @@
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/feed.xml' | relative_url }}">
   {% include analytics.html %}
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Inter,Arial' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3EIA%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/icon.svg' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/img/avatar.png' | relative_url }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:title" content="{{ page.title | default: site.title }}">
+  <meta property="og:description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 200 }}">
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:image" content="{{ '/assets/img/og.png' | absolute_url }}">
+  <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
   <a class="skip" href="#conteudo">Ir para o conteúdo</a>
   <header class="topbar">
     <div class="wrap topbar__inner">
       <a class="brand" href="{{ '/' | relative_url }}">
-        <span class="brand__mark">IA</span>
-        <span class="brand__text">{{ site.title }}</span>
+        <img class="brand__icon" src="{{ '/assets/img/icon.svg' | relative_url }}" alt="" width="30" height="30">
+        <span class="brand__text">Radar <span class="brand__accent">IA</span></span>
       </a>
       <nav class="topnav" aria-label="Principal">
         <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Edições</a>
