@@ -111,22 +111,22 @@ Usa o codec próprio "Mirai S" e ocupa 8,45 GB; ~52 tok/s em código num M5 Pro 
 
 App desktop baseado no Code OSS em que agentes como Claude Code e Codex recebem um SDK para desenhar diagramas ligados ao código, com navegação via LSP, diff semântico sensível à AST em Rust e plugins em WASM (~970 estrelas em horas). Por que importa: é uma aposta em interface compartilhada humano–agente para raciocínio arquitetural, um espaço ainda pouco explorado.
 
-**2.7 Nokia AnyJev: camada sem treino que transforma qualquer LLM aberto em modelo de decisão calibrado (Apache-2.0)** — limítrofe, 23/09
+### 2.7 Nokia AnyJev: camada sem treino que transforma qualquer LLM aberto em modelo de decisão calibrado (Apache-2.0) — limítrofe, 23/09
 **Fonte:** [GitHub](https://github.com/nokia-applied-research/AnyJev) · [MarkTechPost](https://www.marktechpost.com/2026/09/23/nokia-open-sources-anyjev-a-training-free-layer-that-turns-any-open-llm-into-a-calibrated-decision-model/) (23/09)
 
 Extrai probabilidades direto dos logprobs, com correção de viés de posição e calibração em lote; no Qwen3-8B com BANKING77, a troca de resposta ao reordenar opções caiu de 23% para 7,3% e o ECE de 0,240 para 0,095. Instala via PyPI (`anyjev[hf]`). Por que importa: é a alternativa on-premises mais direta ao Jev da TypeSafe AI, sem fine-tuning.
 
-**2.8 Together AI: Tev1-4B-experimental + receita "treine seu próprio Jev por US$ 17"** — limítrofe, 23/09
+### 2.8 Together AI: Tev1-4B-experimental + receita "treine seu próprio Jev por US$ 17" — limítrofe, 23/09
 **Fonte:** [Together AI Blog](https://www.together.ai/blog/how-to-train-your-own-jev) · [Modelo](https://huggingface.co/togethercomputer/Tev1-4B-experimental) · [Código](https://github.com/togethercomputer/tev1) (23/09)
 
 Classificador de decisões (contexto, pergunta e 2–24 opções) feito com LoRA sobre o Qwen3.5-4B com ~38 mil exemplos; 25 minutos de treino, US$ 17, receita de dados e scripts completos (código MIT; licença dos pesos não especificada). Por que importa: reproduz o conceito de "modelo de decisão tipado" com custo trivial, útil para quem quer rodar isso em ambiente próprio.
 
-**2.9 Xiaomi MiMo-V2.6 (Pro-RL ~1T MoE, Flash-RL, Distill-Qwen-9B) com 7.000+ ambientes de RL abertos (MIT)** — limítrofe, 22/09
+### 2.9 Xiaomi MiMo-V2.6 (Pro-RL ~1T MoE, Flash-RL, Distill-Qwen-9B) com 7.000+ ambientes de RL abertos (MIT) — limítrofe, 22/09
 **Fonte:** [Hugging Face](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-RL) · [eWeek](https://www.eweek.com/news/xiaomi-mimo-v26-open-source-rl-reproduction/) (23/09)
 
 O Pro tem 1,02 T de parâmetros (42 B ativos), é omnimodal (texto, imagem, vídeo, áudio) com 1 M de contexto, treinado com GRPO totalmente assíncrono em código, agentes, visão e cibersegurança numa única rodada; lidera entre os abertos no índice da Artificial Analysis (46 pontos). A Xiaomi abriu também os ambientes de RL e os frameworks de treino, com custo declarado de ~US$ 2,62 M. Por que importa: é o lançamento de pesos abertos mais importante da semana e, pela abertura dos ambientes de RL, o mais útil para pesquisa. Incluído por relevância, embora de 22/09; se já foi visto em resumo anterior, ignore.
 
-**2.10 Basis Conversations 1500: 1.502 h de conversa natural em 22 idiomas (incl. português)** — limítrofe, 23/09
+### 2.10 Basis Conversations 1500: 1.502 h de conversa natural em 22 idiomas (incl. português) — limítrofe, 23/09
 **Fonte:** [Hugging Face Blog](https://huggingface.co/blog/basis-ai/conversations-1500) · [Dataset](https://huggingface.co/datasets/basis-ai/basis-conversations-1500)
 
 Áudio FLAC 48 kHz com faixa separada por falante (até 4), 2.645 falantes de 33 países e ~100 h anotadas para sobreposição, backchannels e tomada de turno; licença basis-data-license-1.0 (uso comercial e de pesquisa). Por que importa: dataset raro para modelos full-duplex e diarização, com português incluído.
@@ -141,7 +141,7 @@ O Pro tem 1,02 T de parâmetros (42 B ativos), é omnimodal (texto, imagem, víd
 
 *Avaliação honesta: não houve novidade forte e confirmada em 24–25/09 sobre PL 2338, ANPD, TCU, Serpro, Dataprev, CNJ, STF, STJ ou PBIA. O PL 931/2026 (IA na saúde pública) está pronto para votação na CAS do Senado desde 21/09, mas não houve votação na janela. Os itens abaixo são limítrofes ou de menor peso.*
 
-**3.1 TSE lança o ChatVote, assistente de IA sobre as Eleições 2026** — 22/09, atualizado 23/09
+### 3.1 TSE lança o ChatVote, assistente de IA sobre as Eleições 2026 — 22/09, atualizado 23/09
 **Fonte:** [TSE](https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/tse-lanca-assistente-virtual-para-ampliar-acesso-a-informacoes-sobre-as-eleicoes-2026)
 
 Assistente em linguagem natural, 24 h, no Portal do TSE e no app e-Título, cobrindo locais e horários de votação, orientação a mesários, dados de candidatos, resoluções e FAQ; desenvolvido internamente pela Diretoria de Assuntos Estratégicos com TI e Secom, com integração a WhatsApp, voz e avaliação de respostas previstas. O TSE avisa que, em divergência, valem as fontes oficiais. Por que importa: é IA generativa atendendo o eleitor a poucos dias do 1º turno, com risco institucional real se errar; vale acompanhar como o tribunal mede a qualidade das respostas.
@@ -188,7 +188,7 @@ Empresas de energia, gás e água têm 60 dias para listar seus sistemas de IA; 
 
 Johnson quer discutir "a responsabilidade das empresas em manter a segurança"; agenda e participantes não confirmados. Por que importa: pode definir a posição federal sobre regulação e preempção nas próximas semanas, no mesmo dia do DevDay da OpenAI.
 
-**3.10 Sanders e Casar apresentam projeto que proíbe a superinteligência e cria um Departamento de IA** — 23/09, limítrofe
+### 3.10 Sanders e Casar apresentam projeto que proíbe a superinteligência e cria um Departamento de IA — 23/09, limítrofe
 **Fonte:** [Gabinete de Sanders](https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-create-new-federal-agency-to-ban-artificial-superintelligence-pause-advanced-ai-development/) · [Roll Call](https://rollcall.com/2026/09/23/ai-superintelligence-ban-proposed-by-casar-sanders/)
 
 Proibição permanente da superinteligência, pausa no desenvolvimento avançado até existirem protocolos federais, departamento com status ministerial e penas de dissolução da empresa e até 20 anos de prisão. Por que importa: dificilmente avança, mas é a proposta mais dura já apresentada de agência reguladora de IA nos EUA e referência para o debate sobre o PL 2338.
@@ -239,7 +239,7 @@ A Row Zero, apoiada por Wes McKinney (criador do pandas), vira a interface de pl
 
 A Island levantou US$ 400 mi a US$ 6,4 bi para estender o navegador corporativo ao controle de agentes de IA; a OpenEvidence, o "ChatGPT dos médicos", levantou US$ 250 mi a US$ 15 bi com a a16z. Por que importa: governança de agentes virou categoria de investimento própria, na mesma semana dos incidentes do item 1.1. (Detalhes por resumos consistentes; páginas bloqueadas.)
 
-**4.9 Software corporativo corta preço de IA para segurar clientes: Copilot com 30–50% de desconto; Workday, Figma, HubSpot e AWS seguem** — 23/09, limítrofe
+### 4.9 Software corporativo corta preço de IA para segurar clientes: Copilot com 30–50% de desconto; Workday, Figma, HubSpot e AWS seguem — 23/09, limítrofe
 **Fonte:** [Benzinga](https://www.benzinga.com/markets/tech/26/09/61940208/microsoft-chases-mass-copilot-adoption-with-deep-discounts-for-large-companies) · [GuruFocus/The Information](https://www.gurufocus.com/news/9093009/ai-pricing-strategies-shift-among-major-software-firms) · [Índice Zip](https://zip.com/blog/where-ai-budget-is-actually-going) (22/09)
 
 Microsoft: 30% de desconto a partir de 1.000 assentos e até 50% a partir de 10.000, com início possível em outubro (M365 Copilot passou de 30 mi de assentos pagos); Workday dá um ano grátis do Sana a 20 grandes clientes; Figma cortou 50% no custo de IA. O índice da Zip mostra a IA em 8,1% do gasto com software (1,4% um ano antes), mas 21% dos pedidos de compra rejeitados e Anthropic, Cursor e OpenAI com 74% do gasto. Por que importa: a política de preço (não o produto) indica pressão de adoção real, e os dados de rejeição de compra são úteis para quem justifica orçamento.
