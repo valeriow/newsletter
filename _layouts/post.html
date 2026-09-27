@@ -16,7 +16,6 @@ layout: default
   {% assign eps = site.podcast | where: "edicao", page.url | sort: "ordem" %}
   {% if eps.size > 0 %}
   <section class="post__podcast" aria-label="Podcast desta edição">
-    <p class="post__podcast-titulo">🎧 Ouça esta edição no podcast</p>
     {% for e in eps %}
       {% if e.episodio %}{% assign id = e.episodio %}{% else %}{% capture id %}{{ e.semana }}-{{ e.versao }}{% endcapture %}{% endif %}
       {% assign a = site.data.audio[id] %}

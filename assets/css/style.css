@@ -259,9 +259,11 @@ a:hover { text-decoration: underline; }
 .badge--diario { background: var(--t1); color: #fff; }
 .episodio__links { font-size: 13px; color: var(--text-3); }
 
-.post__podcast { margin: 0 0 24px; padding: 14px 16px; border: 1px solid var(--border, rgba(127,127,127,.3)); border-radius: 10px; background: var(--accent-soft); }
-.post__podcast-titulo { margin: 0 0 6px; font-family: var(--sans); font-size: 15px; font-weight: 700; }
-.post__podcast .episodio__versao + .episodio__versao { margin-top: 14px; }
+.post__podcast { margin: 0 0 20px; padding: 8px 12px; border: 1px solid var(--border, rgba(127,127,127,.3)); border-radius: 10px; background: var(--accent-soft); }
+.post__podcast .episodio__versao { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 0; }
+.post__podcast .episodio__versao + .episodio__versao { margin-top: 8px; }
+.post__podcast .episodio__versao audio { flex: 1 1 260px; width: auto; max-width: 560px; height: 36px; }
+.post__podcast > .episodio__links { margin: 6px 0 0; }
 .player__velocidade { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--sans); }
 .player__velocidade-titulo { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-3); }
 .player__pilulas { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--accent-soft); }
