@@ -1,5 +1,5 @@
 (function () {
-  var VELOCIDADES = [0.75, 1, 1.25, 1.5, 1.75, 2];
+  var VELOCIDADES = [0.75, 1, 1.5, 2];
   var CHAVE = 'radar-ia-velocidade';
   var audios = document.querySelectorAll('audio');
   if (!audios.length) return;
