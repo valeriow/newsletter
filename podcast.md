@@ -14,8 +14,7 @@ permalink: /podcast/
 {% else %}
 <ul class="list">
 {% for e in eps %}
-  {% assign id = e.episodio | default: e.semana | append: "-" | append: e.versao %}
-  {% if e.episodio %}{% assign id = e.episodio %}{% endif %}
+  {% if e.episodio %}{% assign id = e.episodio %}{% else %}{% capture id %}{{ e.semana }}-{{ e.versao }}{% endcapture %}{% endif %}
   {% assign a = site.data.audio[id] %}
   <li class="list__item episodio">
     <div class="list__link">

@@ -13,6 +13,22 @@ layout: default
     <h1 class="post__title">{{ page.title }}</h1>
   </header>
 
+  {% assign eps = site.podcast | where: "edicao", page.url | sort: "ordem" %}
+  {% if eps.size > 0 %}
+  <section class="post__podcast" aria-label="Podcast desta edição">
+    <p class="post__podcast-titulo">🎧 Ouça esta edição no podcast</p>
+    {% for e in eps %}
+      {% if e.episodio %}{% assign id = e.episodio %}{% else %}{% capture id %}{{ e.semana }}-{{ e.versao }}{% endcapture %}{% endif %}
+      {% assign a = site.data.audio[id] %}
+      <div class="episodio__versao">
+        <span class="episodio__rotulo">{% if e.versao == "curto" %}Versão curta{% elsif e.versao == "completo" %}Versão completa{% else %}Episódio{% endif %}{% if e.duracao %} · {{ e.duracao }}{% endif %}</span>
+        {% if a %}<audio controls preload="none" src="{{ a.url }}"></audio><span class="episodio__links"><a class="episodio__baixar" href="{{ a.url }}" download>Baixar MP3</a></span>{% else %}<span class="episodio__pendente">Áudio em preparação — costuma levar até uma hora após a edição.</span>{% endif %}
+      </div>
+    {% endfor %}
+    <p class="episodio__links"><a href="{{ '/podcast/' | relative_url }}">Todos os episódios</a> · <a href="{{ '/podcast.xml' | relative_url }}">Feed RSS</a></p>
+  </section>
+  {% endif %}
+
   <div class="post__layout">
     <aside class="toc" aria-label="Seções desta edição">
       <p class="toc__label">Nesta edição</p>

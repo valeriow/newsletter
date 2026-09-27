@@ -258,3 +258,7 @@ a:hover { text-decoration: underline; }
 
 .badge--diario { background: var(--t1); color: #fff; }
 .episodio__links { font-size: 13px; color: var(--text-3); }
+
+.post__podcast { margin: 0 0 24px; padding: 14px 16px; border: 1px solid var(--border, rgba(127,127,127,.3)); border-radius: 10px; background: var(--accent-soft); }
+.post__podcast-titulo { margin: 0 0 6px; font-family: var(--sans); font-size: 15px; font-weight: 700; }
+.post__podcast .episodio__versao + .episodio__versao { margin-top: 14px; }
