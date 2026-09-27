@@ -10,13 +10,27 @@
     if (VELOCIDADES.indexOf(salva) !== -1) atual = salva;
   } catch (e) {}
 
-  var selects = [];
+  var grupos = [];
 
-  function aplicar(v, origem) {
+  function rotulo(v) {
+    return String(v).replace('.', ',') + '×';
+  }
+
+  function marcar() {
+    grupos.forEach(function (g) {
+      g.querySelectorAll('button').forEach(function (b) {
+        var ativo = parseFloat(b.dataset.v) === atual;
+        b.setAttribute('aria-checked', ativo ? 'true' : 'false');
+        b.tabIndex = ativo ? 0 : -1;
+      });
+    });
+  }
+
+  function aplicar(v) {
     atual = v;
     try { localStorage.setItem(CHAVE, String(v)); } catch (e) {}
     audios.forEach(function (a) { a.playbackRate = v; });
-    selects.forEach(function (s) { if (s !== origem) s.value = String(v); });
+    marcar();
   }
 
   audios.forEach(function (audio) {
@@ -24,21 +38,45 @@
     // Alguns navegadores redefinem a velocidade ao carregar a mídia.
     audio.addEventListener('loadedmetadata', function () { audio.playbackRate = atual; });
 
-    var label = document.createElement('label');
-    label.className = 'player__velocidade';
-    label.appendChild(document.createTextNode('Velocidade '));
-    var select = document.createElement('select');
-    select.setAttribute('aria-label', 'Velocidade de reprodução');
+    var wrap = document.createElement('div');
+    wrap.className = 'player__velocidade';
+
+    var titulo = document.createElement('span');
+    titulo.className = 'player__velocidade-titulo';
+    titulo.textContent = 'Velocidade';
+    wrap.appendChild(titulo);
+
+    var grupo = document.createElement('div');
+    grupo.className = 'player__pilulas';
+    grupo.setAttribute('role', 'radiogroup');
+    grupo.setAttribute('aria-label', 'Velocidade de reprodução');
+
     VELOCIDADES.forEach(function (v) {
-      var o = document.createElement('option');
-      o.value = String(v);
-      o.textContent = v + '×';
-      if (v === atual) o.selected = true;
-      select.appendChild(o);
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'player__pilula';
+      b.dataset.v = String(v);
+      b.setAttribute('role', 'radio');
+      b.textContent = rotulo(v);
+      b.addEventListener('click', function () { aplicar(v); });
+      grupo.appendChild(b);
     });
-    select.addEventListener('change', function () { aplicar(parseFloat(select.value), select); });
-    label.appendChild(select);
-    selects.push(select);
-    audio.insertAdjacentElement('afterend', label);
+
+    // Setas do teclado movem a seleção, como em qualquer grupo de opções.
+    grupo.addEventListener('keydown', function (ev) {
+      var i = VELOCIDADES.indexOf(atual);
+      if (ev.key === 'ArrowRight' || ev.key === 'ArrowUp') i = Math.min(i + 1, VELOCIDADES.length - 1);
+      else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowDown') i = Math.max(i - 1, 0);
+      else return;
+      ev.preventDefault();
+      aplicar(VELOCIDADES[i]);
+      grupo.querySelector('[data-v="' + VELOCIDADES[i] + '"]').focus();
+    });
+
+    wrap.appendChild(grupo);
+    grupos.push(grupo);
+    audio.insertAdjacentElement('afterend', wrap);
   });
+
+  marcar();
 })();
