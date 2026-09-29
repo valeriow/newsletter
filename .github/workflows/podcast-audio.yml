@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths: ["_podcast/**", "scripts/gerar_audio.py", ".github/workflows/podcast-audio.yml"]
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Forçar regeneração de todos os episódios já publicados'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -32,6 +37,7 @@ jobs:
       - name: Gerar áudios que ainda não existem
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FORCE_REGEN: ${{ github.event.inputs.force }}
         run: |
           set -euo pipefail
           shopt -s nullglob
@@ -40,7 +46,7 @@ jobs:
             tag="podcast-$ep"
             asset="$ep.mp3"
             sha=$(sha256sum "$roteiro" | cut -d' ' -f1)
-            if gh release view "$tag" --json assets -q '.assets[].name' 2>/dev/null | grep -qx "$asset"; then
+            if [ "${FORCE_REGEN:-false}" != "true" ] && gh release view "$tag" --json assets -q '.assets[].name' 2>/dev/null | grep -qx "$asset"; then
               antigo=$(gh release download "$tag" --pattern "$ep.json" --output - 2>/dev/null | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha256',''))" 2>/dev/null || true)
               if [ "$antigo" = "$sha" ]; then echo "já existe e o roteiro não mudou: $asset"; continue; fi
               echo "roteiro mudou; regenerando $asset"
