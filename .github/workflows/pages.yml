@@ -23,14 +23,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Coletar metadados dos áudios publicados em Releases
+      - name: Coletar metadados dos áudios e preparar publicação estática no GitHub Pages
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p _data
+          mkdir -p _data assets/audio
           gh api --paginate "repos/${GITHUB_REPOSITORY}/releases" > releases.json
           python3 - <<'EOF'
           import json, re, urllib.request, os
+
           rels = json.load(open("releases.json"))
           if isinstance(rels, dict): rels = [rels]
           audio = {}
@@ -48,8 +49,19 @@ jobs:
                           meta = json.load(urllib.request.urlopen(j["browser_download_url"]))
                       except Exception as e:
                           print("meta indisponível:", ep, e)
+
+                  dest_mp3 = f"assets/audio/{ep}.mp3"
+                  print(f"Baixando {ep}.mp3 para servir via GitHub Pages...")
+                  try:
+                      req = urllib.request.Request(a["browser_download_url"], headers={"User-Agent": "Mozilla/5.0"})
+                      with urllib.request.urlopen(req) as resp, open(dest_mp3, "wb") as out:
+                          out.write(resp.read())
+                  except Exception as e:
+                      print(f"Erro ao baixar {ep}.mp3:", e)
+
+                  base_url = "https://valeriow.github.io/newsletter"
                   audio[ep] = {
-                      "url": a["browser_download_url"],
+                      "url": f"{base_url}/assets/audio/{ep}.mp3",
                       "bytes": a.get("size", meta.get("bytes", 0)),
                       "duracao_seg": meta.get("duracao_seg", 0),
                       "publicado": r.get("published_at", ""),

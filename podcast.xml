@@ -8,7 +8,7 @@ permalink: /podcast.xml
     <title>Radar IA</title>
     <link>{{ '/podcast/' | absolute_url }}</link>
     <atom:link href="{{ '/podcast.xml' | absolute_url }}" rel="self" type="application/rss+xml"/>
-    <language>pt-br</language>
+    <language>pt-BR</language>
     <description>As notícias de inteligência artificial — IA agêntica, open source, setor público e IA aplicada — numa conversa entre dois apresentadores. Episódio diário de ~20 minutos e balanço semanal de ~60 minutos aos domingos.</description>
     <itunes:author>Radar IA</itunes:author>
     <itunes:owner><itunes:name>Valério Wittler</itunes:name><itunes:email>valeriow@gmail.com</itunes:email></itunes:owner>
@@ -30,6 +30,8 @@ permalink: /podcast.xml
       <itunes:duration>{{ a.duracao_seg }}</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:explicit>false</itunes:explicit>
+      <itunes:author>Radar IA</itunes:author>
+      <itunes:summary>{{ e.resumo | default: e.title | xml_escape }}</itunes:summary>
     </item>
     {% endif %}{% endfor %}
   </channel>
