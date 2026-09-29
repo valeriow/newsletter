@@ -276,15 +276,24 @@ def silencio(pasta, nome, seg):
                         "-t", str(seg), "-c:a", "libmp3lame", "-b:a", "64k", str(destino)], check=True)
     return destino
 
-def concatenar(itens, pasta, saida, meta, capa):
+def concatenar(itens, pasta, saida, meta, capa, intro=None, outro=None):
     lista = pasta / "lista.txt"
     with open(lista, "w") as f:
+        if intro and Path(intro).exists():
+            f.write(f"file '{Path(intro).resolve()}'\n")
+            f.write(f"file '{silencio(pasta, 'pausa_intro.mp3', 0.5)}'\n")
+
         for i, (quem, _) in enumerate(itens):
             if quem == "PAUSA":
                 f.write(f"file '{silencio(pasta, 'bloco.mp3', PAUSA_BLOCO)}'\n")
             else:
                 f.write(f"file '{pasta / f'{i:04d}.mp3'}'\n")
                 f.write(f"file '{silencio(pasta, 'fala.mp3', PAUSA_FALA)}'\n")
+
+        if outro and Path(outro).exists():
+            f.write(f"file '{silencio(pasta, 'pausa_outro.mp3', 0.5)}'\n")
+            f.write(f"file '{Path(outro).resolve()}'\n")
+
     cmd = ["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista)]
     if capa:
         cmd += ["-i", capa, "-map", "0:a", "-map", "1:v", "-c:v", "copy", "-disposition:v", "attached_pic"]
@@ -304,6 +313,8 @@ def duracao(arquivo):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("roteiro"); ap.add_argument("saida"); ap.add_argument("--capa")
+    ap.add_argument("--intro", default="assets/audio/intro.mp3", help="Caminho da vinheta de introdução")
+    ap.add_argument("--outro", default="assets/audio/outro.mp3", help="Caminho da vinheta de encerramento")
     a = ap.parse_args()
     texto = Path(a.roteiro).read_text(encoding="utf-8")
     meta, corpo = front_matter(texto)
@@ -316,7 +327,7 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         pasta = Path(tmp)
         asyncio.run(sintetizar(itens, pasta))
-        concatenar(itens, pasta, a.saida, meta, a.capa)
+        concatenar(itens, pasta, a.saida, meta, a.capa, intro=a.intro, outro=a.outro)
     d = duracao(a.saida)
     print(f"duração: {int(d//60)}m{int(d%60):02d}s, {os.path.getsize(a.saida)//1024} KB")
     print(json.dumps({"duracao_seg": round(d), "bytes": os.path.getsize(a.saida), "sha256": sha}))
