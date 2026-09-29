@@ -316,6 +316,20 @@ def main():
     ap.add_argument("--intro", default="assets/audio/intro.mp3", help="Caminho da vinheta de introdução")
     ap.add_argument("--outro", default="assets/audio/outro.mp3", help="Caminho da vinheta de encerramento")
     a = ap.parse_args()
+
+    intro_path = a.intro
+    outro_path = a.outro
+
+    # Fallback para vinheta única se intro ou outro não existirem especificamente
+    for alt in ["assets/audio/vinheta.mp3", "assets/audio/RadarIA.mp3", "RadarIA.mp3"]:
+        if not Path(intro_path).exists() and Path(alt).exists():
+            intro_path = alt
+            break
+    for alt in ["assets/audio/vinheta.mp3", "assets/audio/RadarIA.mp3", "RadarIA.mp3"]:
+        if not Path(outro_path).exists() and Path(alt).exists():
+            outro_path = alt
+            break
+
     texto = Path(a.roteiro).read_text(encoding="utf-8")
     meta, corpo = front_matter(texto)
     sha = hashlib.sha256(texto.encode("utf-8")).hexdigest()
@@ -327,7 +341,7 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         pasta = Path(tmp)
         asyncio.run(sintetizar(itens, pasta))
-        concatenar(itens, pasta, a.saida, meta, a.capa, intro=a.intro, outro=a.outro)
+        concatenar(itens, pasta, a.saida, meta, a.capa, intro=intro_path, outro=outro_path)
     d = duracao(a.saida)
     print(f"duração: {int(d//60)}m{int(d%60):02d}s, {os.path.getsize(a.saida)//1024} KB")
     print(json.dumps({"duracao_seg": round(d), "bytes": os.path.getsize(a.saida), "sha256": sha}))
