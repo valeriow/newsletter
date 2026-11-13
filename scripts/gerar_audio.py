@@ -253,6 +253,28 @@ def falas(corpo):
                 itens.append((m.group(1).upper(), texto))
     return itens
 
+CHAMADA_PLATAFORMAS = [
+    "Ah, e antes da despedida: o Radar IA também está no Spotify, no YouTube e no YouTube Music. "
+    "É só procurar por Radar IA e seguir o programa para receber cada episódio novo.",
+    "E quem usa outro aplicativo de podcast também pode assinar pelo feed.",
+]
+
+def inserir_chamada(itens):
+    """Insere a chamada das plataformas antes da fala que cita a edição escrita/site
+    (ou antes das duas últimas falas, a despedida). Não faz nada se o roteiro já citar o Spotify."""
+    if any(q != "PAUSA" and "spotify" in t.lower() for q, t in itens):
+        return itens
+    idx_falas = [i for i, (q, _) in enumerate(itens) if q != "PAUSA"]
+    if len(idx_falas) < 3:
+        return itens
+    alvo = next((i for i in reversed(idx_falas[-4:])
+                 if re.search(r"edição escrita|no site", itens[i][1], re.I)), idx_falas[-2])
+    anterior = next((itens[i][0] for i in reversed(idx_falas) if i < alvo), "LEO")
+    outro = {"ANA": "LEO", "LEO": "ANA"}
+    primeiro = outro[anterior]
+    chamada = [(primeiro, limpar(CHAMADA_PLATAFORMAS[0])), (outro[primeiro], limpar(CHAMADA_PLATAFORMAS[1]))]
+    return itens[:alvo] + chamada + itens[alvo:]
+
 async def sintetizar(itens, pasta):
     sem = asyncio.Semaphore(CONCORRENCIA)
     async def um(i, quem, texto):
@@ -315,6 +337,7 @@ def main():
     ap.add_argument("roteiro"); ap.add_argument("saida"); ap.add_argument("--capa")
     ap.add_argument("--intro", default="assets/audio/intro.mp3", help="Caminho da vinheta de introdução")
     ap.add_argument("--outro", default="assets/audio/outro.mp3", help="Caminho da vinheta de encerramento")
+    ap.add_argument("--sem-chamada", action="store_true", help="Não inserir a chamada do Spotify/YouTube no encerramento")
     a = ap.parse_args()
 
     intro_path = a.intro
@@ -334,7 +357,9 @@ def main():
     meta, corpo = front_matter(texto)
     sha = hashlib.sha256(texto.encode("utf-8")).hexdigest()
     itens = falas(corpo)
-    n = sum(1 for q, _ in itens if q != "PAUSA")
+    if not a.sem_chamada:
+        itens = inserir_chamada(itens)
+    n =sum(1 for q, _ in itens if q != "PAUSA")
     if n == 0:
         sys.exit("nenhuma fala ANA/LEO encontrada no roteiro")
     print(f"{n} falas, {sum(len(t.split()) for _, t in itens)} palavras")

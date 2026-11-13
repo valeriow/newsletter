@@ -24,7 +24,7 @@ layout: default
         {% if a %}<audio controls preload="none" src="{{ a.url }}"></audio><span class="episodio__links"><a class="episodio__baixar" href="{{ a.url }}" download>Baixar MP3</a></span>{% else %}<span class="episodio__pendente">Áudio em preparação — costuma levar até uma hora após a edição.</span>{% endif %}
       </div>
     {% endfor %}
-    <p class="episodio__links"><a href="{{ '/podcast/' | relative_url }}">Todos os episódios</a> · <a href="{{ '/podcast.xml' | relative_url }}">Feed RSS</a></p>
+    <p class="episodio__links"><a href="{{ '/podcast/' | relative_url }}">Todos os episódios</a>{% if site.podcast_plataformas.spotify %} · <a href="{{ site.podcast_plataformas.spotify }}" target="_blank" rel="noopener">Spotify</a>{% endif %}{% if site.podcast_plataformas.youtube_music %} · <a href="{{ site.podcast_plataformas.youtube_music }}" target="_blank" rel="noopener">YouTube Music</a>{% endif %} · <a href="{{ '/podcast.xml' | relative_url }}">Feed RSS</a></p>
   </section>
   {% endif %}
 

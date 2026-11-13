@@ -250,6 +250,11 @@ a:hover { text-decoration: underline; }
 .episodio__versao { display: grid; gap: 6px; margin-top: 10px; }
 .episodio__versao audio { width: 100%; max-width: 560px; }
 
+.podcast__plataformas { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; font-family: var(--sans); }
+.podcast__plataformas-titulo { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-3); margin-right: 2px; }
+.podcast__plataforma { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 14px; font-weight: 600; text-decoration: none; transition: background .15s, color .15s; }
+.podcast__plataforma:hover { background: var(--accent); color: var(--bg, #fff); }
+.podcast__plataforma:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .podcast__assinar { margin: 10px 0 0; font-size: 14px; color: var(--text-3); word-break: break-all; }
 .episodio__edicao { font-size: 14px; font-weight: 600; margin-top: 4px; }
 .episodio__rotulo { font-size: 13px; font-weight: 600; color: var(--text-2); }

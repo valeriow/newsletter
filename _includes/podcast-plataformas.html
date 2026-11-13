@@ -1,0 +1,8 @@
+{% assign pp = site.podcast_plataformas %}
+<nav class="podcast__plataformas" aria-label="Ouça o podcast">
+  <span class="podcast__plataformas-titulo">Ouça no</span>
+  {% if pp.spotify %}<a class="podcast__plataforma" href="{{ pp.spotify }}" target="_blank" rel="noopener">Spotify</a>{% endif %}
+  {% if pp.youtube_music %}<a class="podcast__plataforma" href="{{ pp.youtube_music }}" target="_blank" rel="noopener">YouTube Music</a>{% endif %}
+  {% if pp.youtube %}<a class="podcast__plataforma" href="{{ pp.youtube }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
+  <a class="podcast__plataforma" href="{{ '/podcast.xml' | relative_url }}" title="Feed RSS para qualquer app de podcast">RSS</a>
+</nav>
