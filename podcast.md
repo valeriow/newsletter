@@ -6,7 +6,8 @@ permalink: /podcast/
 <section class="hero hero--compact">
   <h1 class="page__title">Podcast Radar IA</h1>
   <p class="hero__lead">As notícias de IA numa conversa entre dois apresentadores, Ana e Leo. Um <strong>episódio diário</strong> de ~20 minutos com a edição do dia e, aos domingos, um <strong>episódio semanal</strong> de ~60 minutos com o balanço da semana. As vozes são sintéticas.</p>
-  <p class="podcast__assinar">Assine no seu app de podcast com o feed: <a href="{{ '/podcast.xml' | absolute_url }}">{{ '/podcast.xml' | absolute_url }}</a></p>
+  {% include podcast-plataformas.html %}
+  <p class="podcast__assinar">Ou assine em qualquer app de podcast com o feed: <a href="{{ '/podcast.xml' | absolute_url }}">{{ '/podcast.xml' | absolute_url }}</a></p>
 </section>
 {% assign eps = site.podcast | sort: "date" | reverse %}
 {% if eps.size == 0 %}
